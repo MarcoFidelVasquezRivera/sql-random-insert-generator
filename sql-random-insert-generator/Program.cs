@@ -26,14 +26,13 @@ namespace SQL_Random_Insert_Generator
             departmentEmployees = new Dictionary<string, List<string>>();
             departmentProyects = new Dictionary<string, List<string>>();
 
-            string path = "C:/Users/prestamo/Desktop/programas c#/sql-random-insert-generator/data/datos.csv";
-            string fileName = @"C:/Users/David Steven/Documents/GIT/sql-insert-generator/data/WorksOn.sql";
+            string path = "C:/Users/David Steven/Documents/GIT/sql-random-insert-generator/data/datos.csv";
+            string fileName = @"C:/Users/David Steven/Documents/GIT/sql-random-insert-generator/data/INSERTS.sql";
             LoadData(path);
 
             List<String> dataReturned = generateInserts();
-            Console.ReadLine();
 
-            //WriteData(dataReturned, fileName);
+            WriteData(dataReturned, fileName);
 
         }
 
@@ -126,7 +125,7 @@ namespace SQL_Random_Insert_Generator
                 string department = i < 5 ? departmentCodeNumbers[i] : departmentCodeNumbers[r.Next(1, departmentCodeNumbers.Count())];
 
                 departmentEmployees[department].Add(code);
-                string insert = $"INSERT INTO Employee VALUES ('{code}', '{firstName}', '{lastname}', '{address}', TO_DATE('{date}', 'dd/mm/yyyy'), '{gender}', '{job}', '{department}');";
+                string insert = $"INSERT INTO Employee VALUES ('{code}', '{firstName}', '{lastname}', '{address}', TO_DATE('{date}', 'mm/dd/yyyy'), '{gender}', '{job}', '{department}');";
                 employeesGenerated.Add(insert);
             }
 
@@ -183,7 +182,7 @@ namespace SQL_Random_Insert_Generator
                 string project = departmentProyects[department][r.Next(0, departmentProyects[department].Count())];
                 string employee = departmentEmployees[department][r.Next(0, departmentEmployees[department].Count())];
 
-                string insert = $"INSERT INTO WorksOn VALUES('{employee}','{project}', TO_DATE('{date}', 'dd/mm/yyyy'), {hours.ToString("#.#").Replace(',','.')});";
+                string insert = $"INSERT INTO WorksOn VALUES('{employee}','{project}', TO_DATE('{date}', 'mm/dd/yyyy'), {hours.ToString("#.#").Replace(',','.')});";
                 generatedWorksOn.Add(insert);
             }
             return generatedWorksOn;
@@ -198,12 +197,7 @@ namespace SQL_Random_Insert_Generator
             inserts.AddRange(GenerateEmployees());
             inserts.AddRange(GenerateProjects());
             inserts.AddRange(GenerateWorksOn());
-            
 
-            foreach (string st in inserts)
-            {
-                Console.WriteLine(st);
-            }
             return inserts;
         }
 
@@ -215,7 +209,7 @@ namespace SQL_Random_Insert_Generator
 
                 foreach (string d in data)
                 {
-                    writer.Write(d);
+                    writer.WriteLine(d);
                 }
                 writer.Close();
 
